@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<title>easyCounter</title>
+		<meta charset="utf-8">
+		<link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet">
+		<link rel="stylesheet" href="assets/styles.css">
+		<link rel="stylesheet" href="assets/highlight.css">
+  </head>
+  <body>
+
+		<nav class="col-xs-12">
+			<div class="container">
+				<div class="col-xs-6">
+					<h1>easy<span>Counter</span>.js</h1>
+				</div>
+				<div class="col-xs-6">
+					<figure>
+						<a href="http://kamilweber.pl" title="Kamil Weber">
+							<img src="assets/logo.png" alt="Kamil Weber" />
+						</a>
+					</figure>
+				</div>
+			</div>
+		</nav>
+
+		<div class="container">
+			<section id="s1">
+				<article>
+					<h1>Introduction</h1>
+					<p>
+						EasyCounter.js is a library to make working with animated counters easier.
+						It provides lightweight API that allows you to easily create and manage counters on your webpage.
+						Requires jQuery.
+					</p>
+					<p>
+						With this library you can easily attach counter to any element on your website and fire it when user scroll to the target element.
+						All settings are available via HTML custom attributes so you could simply start your journey with:
+					</p>
+					<pre><code class="xhtml">
+	&#60;div class="easycounter" ec-min="0" ec-max="123456789" ec-duration="2000"&#62;&#60;/div&#62;
+					</code></pre>
+					<p>
+						And then:
+					</p>
+					<pre><code class="javascript">
+	$('.easycounter').easyCounter({});
+					</code></pre>
+					<p class="easycounter" ec-min="0" ec-max="123456789" ec-duration="2000"></p>
+				</article>
+			</section>
+			<section id="s2">
+				<article>
+					<h1>Options</h1>
+					<p>
+						EasyCounter.js comes with many configurable options to let you manage your counters both globaly and localy.
+						Before you start you have to know that the html inline attributes like <span class="code">ec-duration</span>
+						will override the same value specified at initialization but only in their own element.
+					</p>
+					<h2>Aavailable initialization options</h2>
+					<p>
+						Library may be initialized with options shown below:
+					</p>
+					<pre><code class="javascript">
+	$('.easycounter').easyCounter({
+		'duration': 1000,
+		'delay': 500,
+		'decimals': 0,
+		'runonce': false,
+		'disableoverride': false,
+		'direction': 'asc',
+		'attrmin': 'ec-min',
+		'attrmax': 'ec-max',
+		'attrdecimals': 'ec-decimals',
+		'attrduration': 'ec-duration',
+		'attrdelay': 'ec-delay',
+		'attrdirection': 'ec-direction',
+		'attrrunonce': 'ec-run-once',
+		'attrdisableoverride': 'ec-disable-override'
+	});
+					</code></pre>
+					<div class="row">
+						<div>
+							<span class="code">duration</span>
+						</div>
+						<div>
+								Duration of animation in miliseconds,
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">delay</span>
+						</div>
+						<div>
+								Time in miliseconds that must elapse before animation starts after element in in viewport.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">decimals</span>
+						</div>
+						<div>
+								Integer number of decimal places to show in animation.<br />
+								<span class="strong">Note:</span> Library by default if not set both decimals
+								and inline decimal attribute will take highest decimal places from <span class="code">attrmin</span> and <span class="code">attrmax</span>
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">runonce</span>
+						</div>
+						<div>
+								Have to be true or false. By defaults animation starts each time after element gets into viewport. If set to true, animation fire only once and stay in complete state.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">disableoverride</span>
+						</div>
+						<div>
+								Have to be true or false. Define if the library can override default element text before start or not.<br />
+								<span class="strong">Note:</span> Library by default overrides default element text with <span class="code">attrmin</span>
+								value so when delay is set start value will be visible. After set to true library will not change element text untill animation starts.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">direction</span>
+						</div>
+						<div>
+								Must be 'asc' or 'desc'. Defines animation direction, for 'asc' - count from lowest to highest val, for 'desc' - count from highest to lowest.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">attrmin</span>
+						</div>
+						<div>
+								HTML inline attribute for minimal animation value. Default <span class="code">ec-min</span>. Overrides initialization options.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">attrmax</span>
+						</div>
+						<div>
+								HTML inline attribute for maximal animation value. Default <span class="code">ec-max</span> Overrides initialization options.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">attrdecimals</span>
+						</div>
+						<div>
+								HTML inline attribute for decimal places. Default <span class="code">ec-decimals</span> Overrides initialization options.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">attrduration</span>
+						</div>
+						<div>
+								HTML inline attribute for duration time. Default <span class="code">ec-duration</span> Overrides initialization options.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">attrdelay</span>
+						</div>
+						<div>
+								HTML inline attribute for animation delay time. Default <span class="code">ec-delay</span> Overrides initialization options.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">attrdirection</span>
+						</div>
+						<div>
+								HTML inline attribute for animation direction. Default <span class="code">ec-direction</span> Overrides initialization options.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">attrrunonce</span>
+						</div>
+						<div>
+								HTML inline attribute for runOnce flag. Default <span class="code">ec-run-once</span> Overrides initialization options.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">attrdisableoverride</span>
+						</div>
+						<div>
+								HTML inline attribute for disableOverride flag. Default <span class="code">ec-disable-override</span> Overrides initialization options.
+						</div>
+					</div>
+				</article>
+			</section>
+			<section id="s3">
+				<article>
+					<h1>Events</h1>
+					<p>
+						EasyCounter.js fires events each time when element isVisible flag or animation state change. Available events:
+					</p>
+					<pre><code class="javascript">
+	$(window).on( "ec-element-enter-screen", {}, function(event, el) {
+	});
+
+	$(window).on( "ec-element-leave-screen", {}, function(event, el) {
+	});
+
+	$(window).on( "ec-animation-start", {}, function(event, el) {
+	});
+
+	$(window).on( "ec-animation-end", {}, function(event, el) {
+	});
+					</code></pre>
+					<div class="row">
+						<div>
+							<span class="code">ec-element-enter-screen</span>
+						</div>
+						<div>
+								Fires once when element enters viewport. Element object given.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">ec-element-leave-screen</span>
+						</div>
+						<div>
+								Fires once when element enters viewport. Element object given.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">ec-animation-start</span>
+						</div>
+						<div>
+								Fires once when animation starts. After delay (if set). Element object given.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">ec-animation-start</span>
+						</div>
+						<div>
+								Fires once when animation is done. Element object given.
+						</div>
+					</div>
+				</article>
+			</section>
+			<section id="s4">
+				<article>
+					<h1>Examples</h1>
+					<p>
+						Simply scroll up and down to fire animations again.
+					</p>
+					<h2>Easy start</h2>
+					<pre><code class="javascript">
+	&#60;div class="easycounter" ec-min="0" ec-max="15000"&#62;&#60;/div&#62;
+	&#60;script type="text/javascript" src="../src/easyCounter.js"&#62;&#60;/script&#62;
+	&#60;script&#62;
+		$('.easycounter').easyCounter({});
+	&#60;/script&#62;
+					</code></pre>
+					<h3>Result</h3>
+					<div class="easycounter" ec-min="0" ec-max="15000"></div>
+				</article>
+				<article>
+					<h2>Values going back</h2>
+					<pre><code class="javascript">
+	&#60;div class="easycounter" ec-min="0" ec-max="15000" ec-direction="desc"&#62;&#60;/div&#62;
+	&#60;script type="text/javascript" src="../src/easyCounter.js"&#62;&#60;/script&#62;
+	&#60;script&#62;
+		$('.easycounter').easyCounter({});
+	&#60;/script&#62;
+					</code></pre>
+					<h3>Result</h3>
+					<div class="easycounter" ec-min="0" ec-max="15000" ec-direction="desc"></div>
+				</article>
+				<article>
+					<h2>Decimals taken from element</h2>
+					<pre><code class="javascript">
+	&#60;div class="easycounter" ec-min="0" ec-max="1000.1234"&#62;&#60;/div&#62;
+	&#60;script type="text/javascript" src="../src/easyCounter.js"&#62;&#60;/script&#62;
+	&#60;script&#62;
+		$('.easycounter').easyCounter({});
+	&#60;/script&#62;
+					</code></pre>
+					<h3>Result</h3>
+					<div class="easycounter" ec-min="0" ec-max="1000.1234"></div>
+				</article>
+				<article>
+					<h2>Decimals override by inline attribute</h2>
+					<pre><code class="javascript">
+	&#60;div class="easycounter" ec-min="0" ec-max="1000.1234" ec-decimals="2"&#62;&#60;/div&#62;
+	&#60;script type="text/javascript" src="../src/easyCounter.js"&#62;&#60;/script&#62;
+	&#60;script&#62;
+		$('.easycounter').easyCounter({});
+	&#60;/script&#62;
+					</code></pre>
+					<h3>Result</h3>
+					<div class="easycounter" ec-min="0" ec-max="1000.1234" ec-decimals="2"></div>
+				</article>
+				<article>
+					<h2>Run once with delay</h2>
+					<pre><code class="javascript">
+	&#60;div class="easycounter" ec-min="0" ec-max="15000" ec-run-once="true" ec-delay="5000"&#62;&#60;/div&#62;
+	&#60;script type="text/javascript" src="../src/easyCounter.js"&#62;&#60;/script&#62;
+	&#60;script&#62;
+		$('.easycounter').easyCounter({});
+	&#60;/script&#62;
+					</code></pre>
+					<h3>Result</h3>
+					<div class="easycounter" ec-min="0" ec-max="1000" ec-run-once="true" ec-delay="5000"></div>
+				</article>
+			</section>
+			<section id="s5">
+				<article>
+					<h1>License</h1>
+					<h2><a href="https://opensource.org/licenses/mit-license.html" title="MIT License">MIT License</a></h2>
+					<p>
+						Copyright 2017 <a href="http://kamilwebrer.pl" title="Kamil Weber">Kamil Weber</a>
+					</p>
+					<p>
+						Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+					</p>
+					<p>
+						The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+					</p>
+					<p>
+						THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+					</p>
+				</article>
+			</section>
+		</div>
+
+		<footer>
+			<div class="container">
+				<p>easy<span>Counter</span>.js</p>
+			</div>
+		</footer>
+
+		<figure class="github-badge">
+			<a href="https://github.com/kWeb24/easyCounter.js" title="GitHub">
+				<img src="assets/github-badge.png" alt="Github" />
+			</a>
+		</figure>
+
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js"></script>
+		<script type="text/javascript" src="../src/easyCounter.js"></script>
+		<script>
+			$('.easycounter').easyCounter({});
+		</script>
+	</body>
+</html>
