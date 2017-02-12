@@ -29,3 +29,23 @@ footer p { font-weight: 900; }
 
 .github-badge { position: fixed; right: 0; bottom: -6px; margin: 0; z-index: 100; }
 .github-badge img { max-height: 100px; }
+
+button {
+  width: 150px;
+  background: #e74c3c;
+  color: #fff;
+  font-size: 14px;
+  line-height: 36px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  border: solid 1px #c0392b;
+  border-radius: 4px;
+  left: 50%;
+  margin-left: -75px;
+}
+
+button:hover {
+  background: #c0392b;
+  border: solid 1px #e74c3c;
+}
