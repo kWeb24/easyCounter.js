@@ -206,8 +206,10 @@
 			},
 
 			shouldRun: function() {
-				if (((this.keyValues.runonce && !this.keyValues.isExecuted) || (!this.keyValues.isExecuting)) && (this.keyValues.autorun)) return true;
-				else return false;
+				if (!this.keyValues.isExecuting && this.keyValues.autorun) {
+					if ((this.keyValues.runonce && !this.keyValues.isExecuted) || !this.keyValues.runonce) return true;					
+				}
+				return false;
 			},
 
 			clearValues: function() {
