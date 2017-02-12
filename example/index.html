@@ -325,7 +325,7 @@
 				<article>
 					<h2>Run once with delay</h2>
 					<pre><code class="javascript">
-	&#60;div id="manualfire" class="easycounter" ec-min="0" ec-max="1000" ec-run-once="true" ec-delay="5000"&#62;&#60;/div&#62;
+	&#60;div class="easycounter" ec-min="0" ec-max="1000" ec-run-once="true" ec-delay="5000"&#62;&#60;/div&#62;
 	&#60;script type="text/javascript" src="../src/easyCounter.js"&#62;&#60;/script&#62;
 	&#60;script&#62;
 		$('.easycounter').easyCounter({});
@@ -340,7 +340,7 @@
 						Click 'Fire' button to start
 					</p>
 					<pre><code class="javascript">
-	&#60;div class="easycounter" ec-min="0" ec-max="1000" ec-auto-run="false"&#62;&#60;/div&#62;
+	&#60;div id="manualfire" class="easycounter" ec-min="0" ec-max="1000" ec-auto-run="false"&#62;&#60;/div&#62;
 	&#60;button onclick="run('#manualfire')"&#62;Fire!&#60;/button&#62;
 	&#60;script type="text/javascript" src="../src/easyCounter.js"&#62;&#60;/script&#62;
 	&#60;script&#62;
