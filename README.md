@@ -165,6 +165,22 @@ Same as first example but counter will not start automatically, fired with 'fire
 	</script>
 ```
 
+## Reseting values
+
+Same as first example. Added 'Clear' button that allows you to manually reset counter value
+
+```html
+	<div id="manualclear" class="easycounter" ec-min="0" ec-max="1000"></div>
+	<button onclick="clr('#manualclear')">Clear</button>
+	<script type="text/javascript" src="../src/easyCounter.js"></script>
+	<script>
+		$('.easycounter').easyCounter({});
+		function clear(el) {
+			$(el).ecclear();
+		}
+	</script>
+```
+
 # License
 
 [MIT License](https://opensource.org/licenses/mit-license.html)

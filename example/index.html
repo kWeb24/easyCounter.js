@@ -355,6 +355,26 @@
 					<div id="manualfire" class="easycounter" ec-min="0" ec-max="1000" ec-auto-run="false"></div>
 					<button onclick="run('#manualfire')">Fire!</button>
 				</article>
+				<article>
+					<h2>Reseting values</h2>
+					<p>
+						Click 'Clear' button to start
+					</p>
+					<pre><code class="javascript">
+	&#60;div id="manualclear" class="easycounter" ec-min="0" ec-max="1000"&#62;&#60;/div&#62;
+	&#60;button onclick="clr('#manualclear')"&#62;Clear&#60;/button&#62;
+	&#60;script type="text/javascript" src="../src/easyCounter.js"&#62;&#60;/script&#62;
+	&#60;script&#62;
+		$('.easycounter').easyCounter({});
+		function clear(el) {
+			$(el).ecclear();
+		}
+	&#60;/script&#62;
+					</code></pre>
+					<h3>Result</h3>
+					<div id="manualclear" class="easycounter" ec-min="0" ec-max="1000"></div>
+					<button onclick="clr('#manualclear')">Clear</button>
+				</article>
 			</section>
 			<section id="s5">
 				<article>
@@ -397,6 +417,10 @@
 			$('.easycounter').easyCounter({});
 			function run(el) {
 				$(el).ecfire();
+			}
+
+			function clr(el) {
+				$(el).ecclear();
 			}
 		</script>
 	</body>
