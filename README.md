@@ -175,7 +175,7 @@ Same as first example. Added 'Clear' button that allows you to manually reset co
 	<script type="text/javascript" src="../src/easyCounter.js"></script>
 	<script>
 		$('.easycounter').easyCounter({});
-		function clear(el) {
+		function clr(el) {
 			$(el).ecclear();
 		}
 	</script>
