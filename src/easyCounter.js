@@ -217,11 +217,18 @@
 				if (this.keyValues.disableOverride && !$(this.element).text()) $(this.element).text('&nbsp;');
 			},
 
+			fire: function(el) {
+				if (el === this.element && !this.keyValues.isExecuting) {
+					this.keyValues.isExecuting = true;
+					this.countUp(el, this);
+				}
+			},
+
 			throwError: function(method, msg) {
-				console.error('%cError: easyCount [' + method + '] -> ' + msg, 'background: #c0392b; color: white;');
+				console.error('%cError: easyCounter.js [' + method + '] -> ' + msg, 'background: #c0392b; color: white;');
 			},
 			throwWarning: function(method, msg) {
-				console.error('%cWarning: easyCount [' + method + '] -> ' + msg, 'background: #d35400; color: white;');
+				console.error('%cWarning: easyCounter.js [' + method + '] -> ' + msg, 'background: #d35400; color: white;');
 			}
 		} );
 
@@ -232,6 +239,15 @@
 						pluginName, new Plugin( this, options ) );
 				}
 			} );
+		};
+
+		$.fn.ecfire = function() {
+			if(!this.data('plugin_easyCounter')) {
+				console.error('%cError: easyCounter.js [fire] -> Given element does not have easyCounter.js attached to it. Initialize first.', 'background: #c0392b; color: white;');
+				return false;
+			} else {
+				this.data('plugin_easyCounter').fire(this[0]);
+			}
 		};
 
 } )( jQuery, window, document );
