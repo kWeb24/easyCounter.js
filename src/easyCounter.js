@@ -20,6 +20,7 @@
 				'decimals': 0,
 				'runonce': false,
 				'disableoverride': false,
+				'autorun': true,
        	'direction': 'asc',
        	'attrmin': 'ec-min',
        	'attrmax': 'ec-max',
@@ -28,7 +29,8 @@
 				'attrdelay': 'ec-delay',
 				'attrdirection': 'ec-direction',
 				'attrrunonce': 'ec-run-once',
-				'attrdisableoverride': 'ec-disable-override'
+				'attrdisableoverride': 'ec-disable-override',
+				'attrautorun': 'ec-auto-run'
 			};
 
 		function Plugin ( element, options ) {
@@ -48,6 +50,7 @@
 				'isFloat': false,
 				'isExecuted': false,
 				'isExecuting': false,
+				'autorun': this.settings.autorun,
 				'disableOverride': this.settings.disableoverride,
 				'runonce': this.settings.runonce,
 				'decimals': this.settings.decimals,
@@ -86,7 +89,8 @@
 					'duration': $(item).attr(this.settings.attrduration),
 					'delay': $(item).attr(this.settings.attrdelay),
 					'direction': $(item).attr(this.settings.attrdirection),
-					'runonce': $(item).attr(this.settings.attrrunonce)
+					'runonce': $(item).attr(this.settings.attrrunonce),
+					'autorun': $(item).attr(this.settings.attrautorun),
 				};
 
 				for (var x in attributes) {
@@ -110,13 +114,15 @@
 					this.throwError('init.validate', 'attr' + name + ' must be ASC or DESC');
 					return false;
 				}
-				if (!$.isNumeric(result) && (name != 'direction') && (name != 'runonce')) {
+				if (!$.isNumeric(result) && (name != 'direction') && (name != 'runonce') && (name != 'autorun')) {
 					this.throwError('init.validate', 'attr' + name + ' is not numeric');
 					return false;
 				}
 
-				if (name == 'runonce' || name == 'disableoverride') {
-					var tmp = (item == 'true' || item == '1' || item) ? true : false;
+				if (name == 'runonce' || name == 'disableoverride' || name == 'autorun') {
+					var tmp = null;
+					if (item == 'true' || item == '1') tmp = true;
+					if (item == 'false' || item == '0') tmp = false;
 					if (tmp !== true && tmp !== false) {
 						this.throwError('init.validate', 'attr' + name + ' must be true or false');
 						return false;
@@ -200,7 +206,7 @@
 			},
 
 			shouldRun: function() {
-				if ((this.keyValues.runonce && !this.keyValues.isExecuted) || (!this.keyValues.isExecuting)) return true;
+				if (((this.keyValues.runonce && !this.keyValues.isExecuted) || (!this.keyValues.isExecuting)) && (this.keyValues.autorun)) return true;
 				else return false;
 			},
 
