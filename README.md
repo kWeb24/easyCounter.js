@@ -20,7 +20,7 @@ $('.easycounter').easyCounter({});
 
 EasyCounter.js comes with many configurable options to let you manage your counters both globaly and localy. Before you start you have to know that the html inline attributes like `ec-duration` will override the same value specified at initialization but only in their own element.
 
-## Aavailable initialization options
+## Available initialization options
 
 Library may be initialized with options shown below:
 
@@ -31,6 +31,7 @@ $('.easycounter').easyCounter({
 		'decimals': 0,
 		'runonce': false,
 		'disableoverride': false,
+		'autorun': true,
 		'direction': 'asc',
 		'attrmin': 'ec-min',
 		'attrmax': 'ec-max',
@@ -39,7 +40,8 @@ $('.easycounter').easyCounter({
 		'attrdelay': 'ec-delay',
 		'attrdirection': 'ec-direction',
 		'attrrunonce': 'ec-run-once',
-		'attrdisableoverride': 'ec-disable-override'
+		'attrdisableoverride': 'ec-disable-override',
+		'attrautorun': 'ec-auto-run'
 	});
 ```
 
@@ -48,6 +50,7 @@ $('.easycounter').easyCounter({
 * `decimals` - Integer number of decimal places to show in animation. Note: Library by default if not set both decimals and inline decimal attribute will take highest decimal places from `attrmin` and `attrmax`
 * `runonce` - Have to be true or false. By defaults animation starts each time after element gets into viewport. If set to true, animation fire only once and stay in complete state.
 * `disableoverride` - Have to be true or false. Define if the library can override default element text before start or not. Note: Library by default overrides default element text with `attrmin` value so when delay is set start value will be visible. After set to true library will not change element text untill animation starts.
+* `autorun` - Have to be true or false. If false counters will not start automatically and have to be fired using `$(target).ecfire()` method.
 * `direction` - Must be 'asc' or 'desc'. Defines animation direction, for 'asc' - count from lowest to highest val, for 'desc' - count from highest to lowest.
 * `attrmin` - HTML inline attribute for minimal animation value. Default `ec-min` Overrides initialization options.
 * `attrmax` - HTML inline attribute for maximal animation value. Default `ec-max` Overrides initialization options.
@@ -57,6 +60,7 @@ $('.easycounter').easyCounter({
 * `attrdirection` - HTML inline attribute for animation direction. Default `ec-direction` Overrides initialization options.
 * `attrrunonce` - HTML inline attribute for runOnce flag. Default 1 Overrides initialization options.
 * `attrdisableoverride` - HTML inline attribute for disableOverride flag. Default `ec-disable-override` Overrides initialization options.
+* `attrautorun` - HTML inline attribute for autorun flag. Default `ec-auto-run` Overrides initialization options.
 
 # Events
 
@@ -135,13 +139,29 @@ Same as previous example but with decimal places set in attribute
 
 ## Run once with delay
 
-Same as previous first example but fire only once with 5 seconds delay
+Same as first example but fire only once with 5 seconds delay
 
 ```html
 	<div class="easycounter" ec-min="0" ec-max="15000" ec-run-once="true" ec-delay="5000"></div>
 	<script type="text/javascript" src="../src/easyCounter.js"></script>
 	<script>
 		$('.easycounter').easyCounter({});
+	</script>
+```
+
+## Disabled autorun
+
+Same as first example but counter will not start automatically, fired with 'fire' button
+
+```html
+	<div id="manualfire" class="easycounter" ec-min="0" ec-max="1000" ec-auto-run="false"></div>
+	<button onclick="run('#manualfire')">Fire!</button>
+	<script type="text/javascript" src="../src/easyCounter.js"></script>
+	<script>
+		$('.easycounter').easyCounter({});
+		function run(el) {
+			$(el).ecfire();
+		}
 	</script>
 ```
 
