@@ -15,30 +15,32 @@
 
 	"use strict";
 		var pluginName = "easyCounter",
-			defaults = {
-				'duration': 1000,
-       	'delay': 0,
-				'decimals': 0,
-				'runonce': false,
-				'disableoverride': false,
-				'autorun': true,
-       	'direction': 'asc',
-       	'attrmin': 'ec-min',
-       	'attrmax': 'ec-max',
-				'attrdecimals': 'ec-decimals',
-				'attrduration': 'ec-duration',
-				'attrdelay': 'ec-delay',
-				'attrdirection': 'ec-direction',
-				'attrrunonce': 'ec-run-once',
-				'attrdisableoverride': 'ec-disable-override',
-				'attrautorun': 'ec-auto-run'
-			};
+				pluginVersion = "0.2.0",
+				defaults = {
+					'duration': 1000,
+	       	'delay': 0,
+					'decimals': 0,
+					'runonce': false,
+					'disableoverride': false,
+					'autorun': true,
+	       	'direction': 'asc',
+	       	'attrmin': 'ec-min',
+	       	'attrmax': 'ec-max',
+					'attrdecimals': 'ec-decimals',
+					'attrduration': 'ec-duration',
+					'attrdelay': 'ec-delay',
+					'attrdirection': 'ec-direction',
+					'attrrunonce': 'ec-run-once',
+					'attrdisableoverride': 'ec-disable-override',
+					'attrautorun': 'ec-auto-run'
+				};
 
 		function Plugin ( element, options ) {
 			this._name = pluginName;
-			this.element = element;
+			this._version = pluginVersion;
 			this._defaults = defaults;
 
+			this.element = element;
 			this.options = options;
 			this.settings = $.extend( {}, defaults, options );
 
@@ -69,16 +71,13 @@
 				var self = this;
 				this.checkAttributes(el);
 
-				$(window).scroll(function() { self.isOnScreen(el); });
 				$(document).ready(function() { self.isOnScreen(el); });
+				$(window).scroll(function() { self.isOnScreen(el); });
 				$(window).on( "ec-element-enter-screen", {}, function(event, el) {
 					if (el === self.element && self.shouldRun()) {
 						self.keyValues.isExecuting = true;
 						self.countUp(el, self);
 					}
-				});
-
-				$(window).on( "ec-element-leave-screen", {}, function(event, el) {
 				});
 			},
 
@@ -115,6 +114,7 @@
 					this.throwError('init.validate', 'attr' + name + ' must be ASC or DESC');
 					return false;
 				}
+
 				if (!$.isNumeric(result) && (name != 'direction') && (name != 'runonce') && (name != 'autorun')) {
 					this.throwError('init.validate', 'attr' + name + ' is not numeric');
 					return false;
@@ -145,7 +145,7 @@
 
 			isOnScreen: function(el) {
 				var win = $(window);
-
+				var bounds = { top: $(el).offset().top, bottom: $(el).offset().bottom, right: $(el).offset().right, left: $(el).offset().left };
 		    var viewport = {
 		        top : win.scrollTop(),
 		        left : win.scrollLeft()
@@ -153,7 +153,6 @@
 
 		    viewport.right = viewport.left + win.width();
 		    viewport.bottom = viewport.top + win.height();
-				var bounds = { top: $(el).offset().top, bottom: $(el).offset().bottom, right: $(el).offset().right, left: $(el).offset().left };
 		    bounds.right = bounds.left + $(el).outerWidth();
 		    bounds.bottom = bounds.top + $(el).outerHeight();
 
@@ -165,9 +164,10 @@
             this.keyValues.isVisible = true;
 	        }
 		    } else if (this.keyValues.isVisible) {
-					$(window).trigger('ec-element-leave-screen', [el]);
-	        this.keyValues.isVisible = false;
+						$(window).trigger('ec-element-leave-screen', [el]);
+						this.keyValues.isVisible = false;
 		    }
+
 		    return result;
 			},
 
@@ -181,7 +181,7 @@
 					min = max;
 					max = tmp;
 				}
-				var t = setTimeout(function(){
+				setTimeout(function(){
 			    $({countNum: min}).stop(true, true).animate({countNum: max}, {
 			        duration: parseInt(self.keyValues.duration),
 			        easing:'linear',
@@ -245,12 +245,22 @@
 		};
 
 		$.fn.ecfire = function() {
-			if(!this.data('plugin_easyCounter')) {
-				console.error('%cError: easyCounter.js [fire] -> Given element does not have easyCounter.js attached to it. Initialize first.', 'background: #c0392b; color: white;');
-				return false;
-			} else {
+			if (hasPluginAttached(this)) {
 				this.data('plugin_easyCounter').fire(this[0]);
 			}
 		};
 
+		$.fn.ecclear = function() {
+			if (hasPluginAttached(this)) {
+				this.data('plugin_easyCounter').clearValues();
+			}
+		};
+
+		function hasPluginAttached(el) {
+			if (!el.data('plugin_easyCounter')) {
+				console.error('%cError: easyCounter.js [fire] -> Given element does not have easyCounter.js attached to it. Initialize first.', 'background: #c0392b; color: white;');
+				return false;
+			}
+			return true;
+		}
 } )( jQuery, window, document );
