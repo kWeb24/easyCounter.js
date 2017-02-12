@@ -1,6 +1,7 @@
 /*!
 * @license easyCounterJS
 * Visit [https://github.com/kWeb24/easyCounter.js] for documentation, updates and examples.
+* Version 0.2.0
 *
 * Copyright (c) 2017 kamilweber.pl
 *
@@ -14,28 +15,32 @@
 
 	"use strict";
 		var pluginName = "easyCounter",
-			defaults = {
-				'duration': 1000,
-       	'delay': 0,
-				'decimals': 0,
-				'runonce': false,
-				'disableoverride': false,
-       	'direction': 'asc',
-       	'attrmin': 'ec-min',
-       	'attrmax': 'ec-max',
-				'attrdecimals': 'ec-decimals',
-				'attrduration': 'ec-duration',
-				'attrdelay': 'ec-delay',
-				'attrdirection': 'ec-direction',
-				'attrrunonce': 'ec-run-once',
-				'attrdisableoverride': 'ec-disable-override'
-			};
+				pluginVersion = "0.2.0",
+				defaults = {
+					'duration': 1000,
+	       	'delay': 0,
+					'decimals': 0,
+					'runonce': false,
+					'disableoverride': false,
+					'autorun': true,
+	       	'direction': 'asc',
+	       	'attrmin': 'ec-min',
+	       	'attrmax': 'ec-max',
+					'attrdecimals': 'ec-decimals',
+					'attrduration': 'ec-duration',
+					'attrdelay': 'ec-delay',
+					'attrdirection': 'ec-direction',
+					'attrrunonce': 'ec-run-once',
+					'attrdisableoverride': 'ec-disable-override',
+					'attrautorun': 'ec-auto-run'
+				};
 
 		function Plugin ( element, options ) {
 			this._name = pluginName;
-			this.element = element;
+			this._version = pluginVersion;
 			this._defaults = defaults;
 
+			this.element = element;
 			this.options = options;
 			this.settings = $.extend( {}, defaults, options );
 
@@ -48,6 +53,7 @@
 				'isFloat': false,
 				'isExecuted': false,
 				'isExecuting': false,
+				'autorun': this.settings.autorun,
 				'disableOverride': this.settings.disableoverride,
 				'runonce': this.settings.runonce,
 				'decimals': this.settings.decimals,
@@ -65,16 +71,13 @@
 				var self = this;
 				this.checkAttributes(el);
 
-				$(window).scroll(function() { self.isOnScreen(el); });
 				$(document).ready(function() { self.isOnScreen(el); });
+				$(window).scroll(function() { self.isOnScreen(el); });
 				$(window).on( "ec-element-enter-screen", {}, function(event, el) {
 					if (el === self.element && self.shouldRun()) {
 						self.keyValues.isExecuting = true;
 						self.countUp(el, self);
 					}
-				});
-
-				$(window).on( "ec-element-leave-screen", {}, function(event, el) {
 				});
 			},
 
@@ -86,7 +89,8 @@
 					'duration': $(item).attr(this.settings.attrduration),
 					'delay': $(item).attr(this.settings.attrdelay),
 					'direction': $(item).attr(this.settings.attrdirection),
-					'runonce': $(item).attr(this.settings.attrrunonce)
+					'runonce': $(item).attr(this.settings.attrrunonce),
+					'autorun': $(item).attr(this.settings.attrautorun),
 				};
 
 				for (var x in attributes) {
@@ -110,13 +114,16 @@
 					this.throwError('init.validate', 'attr' + name + ' must be ASC or DESC');
 					return false;
 				}
-				if (!$.isNumeric(result) && (name != 'direction') && (name != 'runonce')) {
+
+				if (!$.isNumeric(result) && (name != 'direction') && (name != 'runonce') && (name != 'autorun')) {
 					this.throwError('init.validate', 'attr' + name + ' is not numeric');
 					return false;
 				}
 
-				if (name == 'runonce' || name == 'disableoverride') {
-					var tmp = (item == 'true' || item == '1' || item) ? true : false;
+				if (name == 'runonce' || name == 'disableoverride' || name == 'autorun') {
+					var tmp = null;
+					if (item == 'true' || item == '1') tmp = true;
+					if (item == 'false' || item == '0') tmp = false;
 					if (tmp !== true && tmp !== false) {
 						this.throwError('init.validate', 'attr' + name + ' must be true or false');
 						return false;
@@ -138,7 +145,7 @@
 
 			isOnScreen: function(el) {
 				var win = $(window);
-
+				var bounds = { top: $(el).offset().top, bottom: $(el).offset().bottom, right: $(el).offset().right, left: $(el).offset().left };
 		    var viewport = {
 		        top : win.scrollTop(),
 		        left : win.scrollLeft()
@@ -146,7 +153,6 @@
 
 		    viewport.right = viewport.left + win.width();
 		    viewport.bottom = viewport.top + win.height();
-				var bounds = { top: $(el).offset().top, bottom: $(el).offset().bottom, right: $(el).offset().right, left: $(el).offset().left };
 		    bounds.right = bounds.left + $(el).outerWidth();
 		    bounds.bottom = bounds.top + $(el).outerHeight();
 
@@ -158,9 +164,10 @@
             this.keyValues.isVisible = true;
 	        }
 		    } else if (this.keyValues.isVisible) {
-					$(window).trigger('ec-element-leave-screen', [el]);
-	        this.keyValues.isVisible = false;
+						$(window).trigger('ec-element-leave-screen', [el]);
+						this.keyValues.isVisible = false;
 		    }
+
 		    return result;
 			},
 
@@ -174,7 +181,7 @@
 					min = max;
 					max = tmp;
 				}
-				var t = setTimeout(function(){
+				setTimeout(function(){
 			    $({countNum: min}).stop(true, true).animate({countNum: max}, {
 			        duration: parseInt(self.keyValues.duration),
 			        easing:'linear',
@@ -200,8 +207,10 @@
 			},
 
 			shouldRun: function() {
-				if ((this.keyValues.runonce && !this.keyValues.isExecuted) || (!this.keyValues.isExecuting)) return true;
-				else return false;
+				if (!this.keyValues.isExecuting && this.keyValues.autorun) {
+					if ((this.keyValues.runonce && !this.keyValues.isExecuted) || !this.keyValues.runonce) return true;
+				}
+				return false;
 			},
 
 			clearValues: function() {
@@ -211,11 +220,18 @@
 				if (this.keyValues.disableOverride && !$(this.element).text()) $(this.element).text('&nbsp;');
 			},
 
+			fire: function(el) {
+				if (el === this.element && !this.keyValues.isExecuting) {
+					this.keyValues.isExecuting = true;
+					this.countUp(el, this);
+				}
+			},
+
 			throwError: function(method, msg) {
-				console.error('%cError: easyCount [' + method + '] -> ' + msg, 'background: #c0392b; color: white;');
+				console.error('%cError: easyCounter.js [' + method + '] -> ' + msg, 'background: #c0392b; color: white;');
 			},
 			throwWarning: function(method, msg) {
-				console.error('%cWarning: easyCount [' + method + '] -> ' + msg, 'background: #d35400; color: white;');
+				console.error('%cWarning: easyCounter.js [' + method + '] -> ' + msg, 'background: #d35400; color: white;');
 			}
 		} );
 
@@ -228,4 +244,23 @@
 			} );
 		};
 
+		$.fn.ecfire = function() {
+			if (hasPluginAttached(this)) {
+				this.data('plugin_easyCounter').fire(this[0]);
+			}
+		};
+
+		$.fn.ecclear = function() {
+			if (hasPluginAttached(this)) {
+				this.data('plugin_easyCounter').clearValues();
+			}
+		};
+
+		function hasPluginAttached(el) {
+			if (!el.data('plugin_easyCounter')) {
+				console.error('%cError: easyCounter.js [fire] -> Given element does not have easyCounter.js attached to it. Initialize first.', 'background: #c0392b; color: white;');
+				return false;
+			}
+			return true;
+		}
 } )( jQuery, window, document );
