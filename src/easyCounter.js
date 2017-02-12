@@ -1,6 +1,7 @@
 /*!
 * @license easyCounterJS
 * Visit [https://github.com/kWeb24/easyCounter.js] for documentation, updates and examples.
+* Version 0.2.0
 *
 * Copyright (c) 2017 kamilweber.pl
 *
@@ -207,7 +208,7 @@
 
 			shouldRun: function() {
 				if (!this.keyValues.isExecuting && this.keyValues.autorun) {
-					if ((this.keyValues.runonce && !this.keyValues.isExecuted) || !this.keyValues.runonce) return true;					
+					if ((this.keyValues.runonce && !this.keyValues.isExecuted) || !this.keyValues.runonce) return true;
 				}
 				return false;
 			},
