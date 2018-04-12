@@ -1,4 +1,4 @@
-# easyCounter.js v0.2.0
+# easyCounter.js v0.3.0
 
 EasyCounter.js is a library to make working with animated counters easier. It provides lightweight API that allows you to easily create and manage counters on your webpage. Requires jQuery.
 
@@ -29,6 +29,7 @@ $('.easycounter').easyCounter({
 		'duration': 1000,
 		'delay': 500,
 		'decimals': 0,
+		'kilosepa': false,
 		'runonce': false,
 		'disableoverride': false,
 		'autorun': true,
@@ -36,6 +37,7 @@ $('.easycounter').easyCounter({
 		'attrmin': 'ec-min',
 		'attrmax': 'ec-max',
 		'attrdecimals': 'ec-decimals',
+		'attrkilosepa': 'ec-kilosepa',
 		'attrduration': 'ec-duration',
 		'attrdelay': 'ec-delay',
 		'attrdirection': 'ec-direction',
@@ -48,6 +50,7 @@ $('.easycounter').easyCounter({
 * `duration` - Duration of animation in miliseconds,
 * `delay` - Time in miliseconds that must elapse before animation starts after element in in viewport.
 * `decimals` - Integer number of decimal places to show in animation. Note: Library by default if not set both decimals and inline decimal attribute will take highest decimal places from `attrmin` and `attrmax`
+* `kilosepa` -  Thousands separator character. Default false, wich means no separator at all. 
 * `runonce` - Have to be true or false. By defaults animation starts each time after element gets into viewport. If set to true, animation fire only once and stay in complete state.
 * `disableoverride` - Have to be true or false. Define if the library can override default element text before start or not. Note: Library by default overrides default element text with `attrmin` value so when delay is set start value will be visible. After set to true library will not change element text untill animation starts.
 * `autorun` - Have to be true or false. If false counters will not start automatically and have to be fired using `$(target).ecfire()` method.
@@ -55,6 +58,7 @@ $('.easycounter').easyCounter({
 * `attrmin` - HTML inline attribute for minimal animation value. Default `ec-min` Overrides initialization options.
 * `attrmax` - HTML inline attribute for maximal animation value. Default `ec-max` Overrides initialization options.
 * `attrdecimals` - HTML inline attribute for decimal places. Default `ec-decimals` Overrides initialization options.
+* `attrkilosepa` - HTML inline attribute for thousands separator. Default ec-kilosepa Overrides initialization options. 
 * `attrduration` - HTML inline attribute for duration time. Default `ec-duration` Overrides initialization options.
 * `attrdelay` - HTML inline attribute for animation delay time. Default `ec-delay` Overrides initialization options.
 * `attrdirection` - HTML inline attribute for animation direction. Default `ec-direction` Overrides initialization options.
@@ -128,6 +132,18 @@ Same as first example but with decimal places
 ## Decimals override by inline attribute
 
 Same as previous example but with decimal places set in attribute
+
+```html
+	<div class="easycounter" ec-min="1000" ec-max="18000.1234" ec-decimals="2" ec-kilosepa=","></div>
+	<script type="text/javascript" src="../src/easyCounter.js"></script>
+	<script>
+		$('.easycounter').easyCounter({});
+	</script>
+```
+
+## Thousands separator example with decimals
+
+Using comma as thousands separator
 
 ```html
 	<div class="easycounter" ec-min="0" ec-max="1000.1234"></div>
