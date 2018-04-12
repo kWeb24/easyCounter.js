@@ -1,7 +1,7 @@
 /*!
 * @license easyCounterJS
 * Visit [https://github.com/kWeb24/easyCounter.js] for documentation, updates and examples.
-* Version 0.2.0
+* Version 0.3.0
 *
 * Copyright (c) 2017 kamilweber.pl
 *
@@ -15,11 +15,12 @@
 
 	"use strict";
 		var pluginName = "easyCounter",
-				pluginVersion = "0.2.0",
+				pluginVersion = "0.3.0",
 				defaults = {
 					'duration': 1000,
 	       	'delay': 0,
 					'decimals': 0,
+					'kilosepa': false,
 					'runonce': false,
 					'disableoverride': false,
 					'autorun': true,
@@ -27,6 +28,7 @@
 	       	'attrmin': 'ec-min',
 	       	'attrmax': 'ec-max',
 					'attrdecimals': 'ec-decimals',
+					'attrkilosepa': 'ec-kilosepa',
 					'attrduration': 'ec-duration',
 					'attrdelay': 'ec-delay',
 					'attrdirection': 'ec-direction',
@@ -57,6 +59,7 @@
 				'disableOverride': this.settings.disableoverride,
 				'runonce': this.settings.runonce,
 				'decimals': this.settings.decimals,
+				'kilosepa': this.settings.kilosepa,
 				'duration': this.settings.duration,
 				'delay': this.settings.delay,
 				'direction': this.settings.direction
@@ -91,6 +94,7 @@
 					'direction': $(item).attr(this.settings.attrdirection),
 					'runonce': $(item).attr(this.settings.attrrunonce),
 					'autorun': $(item).attr(this.settings.attrautorun),
+					'kilosepa': $(item).attr(this.settings.attrkilosepa),
 				};
 
 				for (var x in attributes) {
@@ -115,7 +119,7 @@
 					return false;
 				}
 
-				if (!$.isNumeric(result) && (name != 'direction') && (name != 'runonce') && (name != 'autorun')) {
+				if (!$.isNumeric(result) && (name != 'direction') && (name != 'runonce') && (name != 'autorun') && (name != 'kilosepa')) {
 					this.throwError('init.validate', 'attr' + name + ' is not numeric');
 					return false;
 				}
@@ -131,6 +135,9 @@
 					result = tmp;
 				}
 				if (name == 'min' || name == 'max') this.setValueAttributes(result);
+				if (name == 'kilosepa') {
+					result = item;
+				}
 				return result;
 			},
 
@@ -190,12 +197,12 @@
 								self.keyValues.isExecuting = true;
 							},
 			        step: function() {
-			            if (!self.keyValues.isFloat) $(target).text(Math.floor(this.countNum));
-			            else $(target).text(this.countNum.toFixed(self.keyValues.decimals));
+			            if (!self.keyValues.isFloat) $(target).text(self.thousandsSeparator(Math.floor(this.countNum), self));
+			            else $(target).text(self.thousandsSeparator(this.countNum.toFixed(self.keyValues.decimals), self));
 			        },
 			        complete: function() {
-			            if (!self.keyValues.isFloat) $(target).text(Math.floor(this.countNum));
-			            else $(target).text(this.countNum.toFixed(self.keyValues.decimals));
+			            if (!self.keyValues.isFloat) $(target).text(self.thousandsSeparator(Math.floor(this.countNum), self));
+			            else $(target).text(self.thousandsSeparator(this.countNum.toFixed(self.keyValues.decimals), self));
 			        },
 							done: function() {
 								$(window).trigger('ec-animation-end', [target]);
@@ -204,6 +211,16 @@
 							}
 			    });
 				}, delay);
+			},
+
+			thousandsSeparator: function(num, self) {
+				if (!self.keyValues.kilosepa || self.keyValues.kilosepa == 'false') {
+					return num;
+				} else {
+					var num_parts = num.toString().split(".");
+					num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, self.keyValues.kilosepa);
+					return num_parts.join(".");
+				}
 			},
 
 			shouldRun: function() {
