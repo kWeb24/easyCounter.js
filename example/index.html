@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="pl">
 	<head>
-		<title>easyCounter.js 0.2.0</title>
+		<title>easyCounter.js 0.3.0</title>
 		<meta charset="utf-8">
-		<meta description="easyCounter.js v0.2.0"
+		<meta description="easyCounter.js v0.3.0"
 		<link href="https://fonts.googleapis.com/css?family=Lato:400,900" rel="stylesheet">
 		<link rel="stylesheet" href="assets/styles.css">
 		<link rel="stylesheet" href="assets/highlight.css">
@@ -68,6 +68,7 @@
 		'duration': 1000,
 		'delay': 500,
 		'decimals': 0,
+		'kilosepa': false,
 		'runonce': false,
 		'disableoverride': false,
 		'autorun': true,
@@ -75,6 +76,7 @@
 		'attrmin': 'ec-min',
 		'attrmax': 'ec-max',
 		'attrdecimals': 'ec-decimals',
+		'attrkilosepa': 'ec-kilosepa',
 		'attrduration': 'ec-duration',
 		'attrdelay': 'ec-delay',
 		'attrdirection': 'ec-direction',
@@ -107,6 +109,14 @@
 								Integer number of decimal places to show in animation.<br />
 								<span class="strong">Note:</span> Library by default if not set both decimals
 								and inline decimal attribute will take highest decimal places from <span class="code">attrmin</span> and <span class="code">attrmax</span>
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">kilosepa</span>
+						</div>
+						<div>
+								Thousands separator character. Default false, wich means no separator at all.
 						</div>
 					</div>
 					<div class="row">
@@ -165,6 +175,14 @@
 						</div>
 						<div>
 								HTML inline attribute for decimal places. Default <span class="code">ec-decimals</span> Overrides initialization options.
+						</div>
+					</div>
+					<div class="row">
+						<div>
+							<span class="code">attrkilosepa</span>
+						</div>
+						<div>
+								HTML inline attribute for thousands separator. Default <span class="code">ec-kilosepa</span> Overrides initialization options.
 						</div>
 					</div>
 					<div class="row">
@@ -324,6 +342,18 @@
 					<div class="easycounter" ec-min="0" ec-max="1000.1234" ec-decimals="2"></div>
 				</article>
 				<article>
+					<h2>Thousands separator example with decimals</h2>
+					<pre><code class="javascript">
+	&#60;div class="easycounter" ec-min="0" ec-max="1000.1234" ec-decimals="2" ec-kilosepa=","&#62;&#60;/div&#62;
+	&#60;script type="text/javascript" src="../src/easyCounter.js"&#62;&#60;/script&#62;
+	&#60;script&#62;
+		$('.easycounter').easyCounter({});
+	&#60;/script&#62;
+					</code></pre>
+					<h3>Result</h3>
+					<div class="easycounter" ec-min="1000" ec-max="18000.1234" ec-decimals="2" ec-kilosepa=","></div>
+				</article>
+				<article>
 					<h2>Run once with delay</h2>
 					<pre><code class="javascript">
 	&#60;div class="easycounter" ec-min="0" ec-max="1000" ec-run-once="true" ec-delay="5000"&#62;&#60;/div&#62;
@@ -398,7 +428,7 @@
 
 		<footer>
 			<div class="container">
-				<p>easy<span>Counter</span>.js v0.2.0</p>
+				<p>easy<span>Counter</span>.js v0.3.0</p>
 			</div>
 		</footer>
 
